@@ -1,0 +1,166 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+/*MAIN*/
+table .number { text-align: right !important; }
+td.err-msg {
+    background: #9c0000;
+}
+
+html{
+  height: 100%;
+  width:100%;
+  padding:0;
+  margin:0;
+  -webkit-text-size-adjust:none;
+}
+
+.armorium {
+  display: block;
+  margin: auto;
+  width: 20%;
+}
+
+body {
+  min-height: 100%;
+  width:100%;
+  padding:0;
+  margin:0;
+  font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
+  background: black;
+}
+
+h1 {
+    font-size:24px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+}
+
+.event {
+    border-radius:4px;
+    -webkit-border-radius:4px;
+    color:#FFFFFF;
+    font-size:12px;
+    margin:0px 30px;
+    padding:2px 0px;
+}
+
+.event.listening {
+    display:block;
+    text-align: center;
+}
+
+.event.received {
+    display:none;
+}
+
+.login {
+  font-size: 30px;
+  text-align: center;
+}
+
+input#UserPassword, input#UserUsername {
+  width: 50%;
+  padding: 10px;
+    height: 40px;
+    font-size: 35px;
+}
+button#login {
+border: 0px;
+    width: 57%;
+    height: 100px !important;
+    background-color: #c4942e;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    font-size: 35px;
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+    font-weight: 700;
+    padding-left: 15px;
+    color: #fff;
+    letter-spacing: 1px;
+    margin: 0 auto;
+    line-height: 23px !important;
+}
+#status {
+  color: red;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+}
+.button {
+    border: 0px;
+    width: 66% !important;
+    background-color: #c4942e;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0px;
+    font-size: 24px;
+    font-family: 'Montserrat', sans-serif;
+    text-decoration: none;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+    padding: 15px;
+    margin: auto;
+    display: block;
+    text-align: center;
+}
+.input_block {
+    display: block;
+    text-align: center;
+    width: 80%;
+    margin: auto;
+}
+label {
+    color: white;
+    display: block;
+    font-size: 22px;
+    margin-top: 26px;
+}
+select.disposition {
+    background: white;
+    width: 66%;
+    font-size: 40px;
+}
+input.serial, #internal_notes {
+    height: 40px;
+    width: 66%;
+    font-size: 45px;
+}
+div#enterChildInfo, #getParent {
+  text-align: center;
+}
+a#menu {
+    font-size: 25px !important;
+    width: 30% !important;
+}
+h2 {
+    color: white;
+    text-align: center;
+}
+.screen.checkout {
+    text-align: center;
+}

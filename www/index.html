@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Pawnpire Assistant</title>
+    </head>
+    <body>
+        <h1>Pawnpire</h1>
+        <div id="deviceready" class="blink">
+            <div id="status"></div>
+            <a class="button go_to" id="menu">Go Back</a>
+            <div class="screen intro">
+                <div class="intro">
+                    [INSERT BLURB/GRAPHICS ABOUT PROCESS]
+                    <a class="button go_to" id="create_account">Create Account</a><br>
+                    <a class="button go_to" id="start_pawn">Start Pawn</a><br>
+                </div>
+            </div>
+            <div class="screen create_account">
+                [INSERT FORM TO CREATE ACCOUNT HERE]
+            </div>
+            <div class="screen start_pawn">
+                <!-- <a class="button" id="take_pic">Take Picture</a><br> -->
+                <br/>
+                <div style="margin:0 auto; width:30%!important;text-align: center;">
+					<img src="img/cam2.jpg" id='img' style="width: 200px; height: 100px;">
+		        </div>
+		        <div style="width:100%; text-align:center; padding:10px;">
+		            <button class="button" id='but_take'>Take photo</button><br/>
+            		<button class="button" id='but_select'>Select photo from Gallery</button>
+		        </div>
+            
+                <span id="show_loader" style="color:white;"></span>
+            </div>
+            <div class="screen menu">
+                <h2>Choose Task</h2>
+                <a class="button go_to" id="warehouse_checkin">Warehouse Checkin</a><br>
+                <a class="button go_to" id="relist">Relist</a><br>
+                <a class="button go_to" id="checkout">Checkout</a><br>
+                <a class="button go_to" id="logout">Logout</a>
+            </div>
+            <div class="screen checkout">
+                <h2>Checkout</h2>
+                <form id="checkoutForm" onsubmit="return false">
+                    <label>Serial</label>
+                    <input name="data[InventoryItem][id]" type="text" class="serial">
+                </form>
+            </div>
+            <div class="screen relist">
+                <h2>Relist</h2>
+                <div id='getParent'>
+                    <form id='relistFormParent' action='' method='post' onsubmit="return false">
+                        <label>UPC</label>
+                        <input name="data[InventoryItem][id]" type="text" class="serial">
+                    </form>
+                </div>
+                <div id='enterChildInfo'>
+                    <form id='relistFormChild' action='' method='post'>
+                        <label>Original Listing Price</label>
+                        <input name="data[Parent][InventoryItem][original_listing_price]" type="text" class="serial original_listing_price">
+                        <label>Listing Price</label>
+                        <input name="data[Parent][InventoryItem][listing_price]" type="text" class="serial listing_price">
+                        <label>Rock Bottom</label>
+                        <input name="data[Parent][InventoryItem][rock_bottom]" type="text" class="serial rock_bottom">
+                        <label for="InventoryItemShelf">Location</label>
+                        <input name="data[InventoryItem][shelf]" type="text" class="serial relist_shelf">
+                        <label for="InventoryItemShelf">Child</label>
+                        <input name="data[InventoryItem][child_serial]" type="text" class="serial child">
+                    </form>
+                </div>
+            </div>
+            <div class="screen warehouse_checkin">
+                <h2>Warehouse Checkin</h2>
+
+                <form id='warehouseCheckinForm' action='' method='post'>
+                    <div class="input_block">
+                        <label>Disposition</label>
+                        <select name="data[InventoryItem][warehouse_disposition]" class="disposition">
+                            <option>Choose</option>
+                            <option value="Ready to List">Ready to List</option>
+                            <option value="Medical">Medical</option>
+                            <option value="Return to Retail">Return to Retail</option>
+                            <option value="In House">In House</option>
+                            <option value="Counterfeit">Counterfeit</option>
+                            <option value="Relist">Relist</option>
+                            <option value="Sports Needs Authentication">Sports Needs Authentication</option>
+                        </select>
+                    </div>
+
+                    <div class="input_block internal_notes">
+                        <label>Internal Notes</label>
+                        <input type="text" name="data[InventoryItem][internal_notes]" id="internal_notes">
+                    </div>
+
+                    <div class="input_block">
+                        <label>Serial</label>
+                        <input name="data[InventoryItem][id]" type="text" class="serial">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/jquery.js"></script>
+        <script type="text/javascript">
+                        app.initialize();
+
+                        $(document).ready(function () {
+                            $('.internal_notes').hide();
+
+                            window.stage = "intro";
+                            transition(window.stage);
+
+                            $('#login').click(function (e) {
+                                e.preventDefault();
+
+                                $.post('https://www.pawnpire.com/assistant/login', $('#UserLoginForm').serialize(), function (data) {
+                                    if (data.response == 'success') {
+
+                                        $('#status').html("Logged in successfully");
+
+                                        // store credentials
+                                        localStorage.setItem('credentials', $('#UserLoginForm').serialize());
+
+                                        setTimeout(function () {
+                                            transition('menu');
+                                        }, 500);
+
+                                    } else {
+                                        $('#status').html("Incorrect username/password combo");
+                                    }
+                                }, 'json');
+                            });
+
+                            $('.go_to').click(function (e) {
+                                e.preventDefault();
+
+                                if ($(this).attr('id') == 'logout') {
+                                    localStorage.removeItem('credentials');
+                                    transition('login');
+                                    $('#menu').hide();
+
+                                    $('#UserUsername').val('');
+                                    $('#UserPassword').val('');
+                                } else {
+                                    transition($(this).attr('id'));
+                                }
+                            });
+
+                            $('#warehouseCheckinForm').on('submit', function (e) {
+                                e.preventDefault();
+                                return false;
+                            });
+
+                            $('#checkoutForm .serial').keyup(function (event) {
+                                if (event.keyCode == 13 || ($('#checkoutForm .serial').val().length >= 6 && !isNaN($('#checkoutForm .serial').val()))) {
+                                    event.preventDefault();
+                                    $.post('https://www.pawnpire.com/assistant/check_out', localStorage.getItem('credentials') + '&' + $('#checkoutForm').serialize(), function (data) {
+                                        if (data.response == 'success') {
+                                            $('#status').html($('#checkoutForm .serial').val() + ' checked out');
+                                            $('#checkoutForm .serial').val('');
+                                        } else {
+                                            $('#status').html('An error has occurred');
+                                        }
+
+                                        setTimeout(function () {
+                                            $('#status').html('');
+                                        }, 1500);
+                                    }, 'json');
+                                }
+                            });
+
+                            $('#warehouseCheckinForm .serial').keyup(function (event) {
+                                if (($('#warehouseCheckinForm .serial').val().length >= 6 && !isNaN($('#warehouseCheckinForm .serial').val())) || event.keyCode == 13) {
+                                    event.preventDefault();
+                                    $.post('https://www.pawnpire.com/assistant/warehouse_checkin', localStorage.getItem('credentials') + '&' + $('#warehouseCheckinForm').serialize(), function (data) {
+                                        if ($('#warehouseCheckinForm .serial').val()) {
+                                            if (data.response == 'success') {
+                                                $('#status').html('<span style="color: #00BB00;">' + $('#warehouseCheckinForm .serial').val() + ' checked in</span>');
+                                                $('#warehouseCheckinForm .serial').val('');
+                                            } else {
+                                                $('#status').html('An error occured');
+                                            }
+                                        }
+                                    }, 'json');
+                                }
+                            });
+
+                            $('#enterChildInfo').hide();
+
+                            $('.relist_shelf').on('keyup', function () {
+                                if ($('.relist_shelf').val().length >= 4) {
+                                    $('.child').focus();
+                                }
+                            });
+
+                            $('#relistFormChild .child').keyup(function (event) {
+                                if (event.keyCode == 13 || $('#relistFormChild .child').val().length >= 6) {
+                                    event.preventDefault();
+                                    $.post('https://www.pawnpire.com/assistant/relist_item', localStorage.getItem('credentials') + '&' + $('#relistFormParent').serialize() + '&' + $('#relistFormChild').serialize(), function (data) {
+                                        if (data.response == 'success') {
+                                            $('#status').html('Relisted successfully');
+
+                                            setTimeout(function () {
+                                                $('#relistFormChild')[0].reset();
+                                                $('#relistFormParent')[0].reset();
+
+                                                $('#enterChildInfo').hide();
+                                                $('#relistFormParent').show();
+                                                $('#status').html('');
+                                            }, 500)
+                                        } else {
+                                            $('#status').html('An error occurred');
+                                        }
+                                    }, 'json');
+                                }
+                            });
+
+                            $('#relistFormParent .serial').keyup(function (event) {
+                                if (event.keyCode == 13 || $('#relistFormParent .serial').val().length >= 12) {
+                                    event.preventDefault();
+                                    $.post('https://www.pawnpire.com/assistant/get_parent', localStorage.getItem('credentials') + '&' + $('#relistFormParent').serialize(), function (data) {
+                                        if (data.response == 'success') {
+                                            $('.original_listing_price').val(data.original_listing_price);
+                                            $('.listing_price').val(data.listing_price);
+                                            $('.rock_bottom').val(data.rock_bottom);
+                                            $('#enterChildInfo').show();
+                                            $('#relistFormParent').hide();
+                                        } else {
+                                            $('#status').html('An error occured');
+                                            setTimeout(function () {
+                                                $('#status').html('');
+                                            }, 500);
+                                        }
+                                    }, 'json');
+                                }
+                            });
+
+                            $('#menu').hide();
+
+                            // show description if warehouse inventory gets checked in for 'in house' use
+                            $('.disposition').change(function () {
+                                if ($(this).val() == "In House") {
+                                    $('.internal_notes').show();
+                                } else {
+                                    $('.internal_notes').hide();
+                                }
+                            })
+
+                            /*
+                            $('#take_pic').click(function () {
+
+                                navigator.camera.getPicture(function (data) {
+                                    alert('Success');
+
+                                    send_data_to_server("data:image/jpeg;base64," + data);
+
+                                }, function (message) {
+                                    alert(message);
+                                }, {quality: 50, destinationType: Camera.DestinationType.DATA_URL});
+
+                            });
+                            */
+                            
+                         	// take picture from camera
+                            $('#but_take').click(function(){      
+                                navigator.camera.getPicture(onSuccess, onFail, { quality: 20,
+                                    destinationType: Camera.DestinationType.FILE_URL 
+                                });
+                            });
+
+                            // upload select 
+                            $("#but_select").click(function(){
+                                navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+                                    sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
+                                    allowEdit: true,
+                                    destinationType: Camera.DestinationType.FILE_URI
+                                });
+                            });
+
+                            // Change image source and upload photo to server
+                            function onSuccess(imageURI) {
+                                // Set image source
+                                var image = document.getElementById('img');
+                                image.src = imageURI  + '?' + Math.random();
+
+                                var options = new FileUploadOptions();
+                                options.fileKey = "file";
+                                options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+                                options.mimeType = "image/jpeg";
+
+                                var params = {};
+                                params.value1 = "test";
+                                params.value2 = "param";
+
+                                options.params = params;
+                                options.chunkedMode = false;
+
+                                var ft = new FileTransfer();
+                                ft.upload(imageURI, "http://demo.makitweb.com/phonegap_camera/upload.php", function(result){
+                                    alert('successfully uploaded ' + result.response);
+                                }, function(error){
+                                    alert('error : ' + JSON.stringify(error));
+                                }, options);
+                            }
+                            function onFail(message) {
+                                alert('Failed because: ' + message);
+                            }
+                        });
+
+
+                        function send_data_to_server(imageURI) {
+
+                            //set upload options
+                            var options = new FileUploadOptions();
+                            options.fileKey = "picture";
+                            options.fileName = 'test.jpg';
+                            options.mimeType = 'image/jpeg';
+                            options.headers = {
+                                Connection: "close"
+                            }
+//                options.params = {
+//                    api: 'api',
+//                    bar_code_no: $('#barcode_num').val().trim(),
+//                
+//                };
+
+                            var ft = new FileTransfer();
+                            ft.onprogress = function (progressEvent) {
+
+                                if (progressEvent.lengthComputable) {
+                                    var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
+                                    $('#show_loader').html(perc + "% loaded...");
+                                } else {
+                                    if ($('#show_loader').html() == "") {
+                                        $('#show_loader').html("Loading");
+                                    } else {
+                                        $('#show_loader').html($('show_loader').html() + '.');
+                                    }
+                                }
+                            };
+
+                            ft.upload(imageURI, encodeURI("URL"), win, fail, options);
+                        }
+                        function win(r) {
+                            //alert("Code = " + r.responseCode);
+//                alert("Response = " + r.response);
+//                alert("Sent = " + r.bytesSent);
+                            if (r.responseCode === 200) {
+                                $('#show_loader').html("submitted");
+                            }
+                        }
+
+                        function fail(error) {
+                            //alert("An error has occurred: Code = " + error.code);
+                            //alert("upload error source " + error.source);
+                            //alert("upload error target " + error.target);
+                            alert('Unable to upload image this time, please try again later.');
+                        }
+                        function transition(stage) {
+                            if (stage == 'menu') {
+                                $('#menu').hide();
+                            } else {
+                                $('#menu').show();
+                            }
+
+                            $('.screen').hide();
+                            $('.' + stage).show();
+                            $('#status').html('');
+                        }
+
+                        var pictureSource;   // picture source
+                        var destinationType; // sets the format of returned value 
+
+                        // Wait for Cordova to connect with the device
+                        //
+                        document.addEventListener("deviceready", onDeviceReady, false);
+
+                        // Cordova is ready to be used!
+                        //
+                        function onDeviceReady() {
+                            alert(351);
+                            pictureSource = navigator.camera.PictureSourceType;
+                            destinationType = navigator.camera.DestinationType;
+                        }
+
+                        // Called when a photo is successfully retrieved
+                        //
+                        function onPhotoDataSuccess(imageData) {
+                            // Uncomment to view the base64 encoded image data
+                            // console.log(imageData);
+
+                            // Get image handle
+                            //
+                            var smallImage = document.getElementById('smallImage');
+
+                            // Unhide image elements
+                            //
+                            smallImage.style.display = 'block';
+
+                            // Show the captured photo
+                            // The inline CSS rules are used to resize the image
+                            //
+                            smallImage.src = "data:image/jpeg;base64," + imageData;
+                        }
+
+                        // Called when a photo is successfully retrieved
+                        //
+                        function onPhotoURISuccess(imageURI) {
+                            // Uncomment to view the image file URI 
+                            // console.log(imageURI);
+
+                            // Get image handle
+                            //
+                            var largeImage = document.getElementById('largeImage');
+
+                            // Unhide image elements
+                            //
+                            largeImage.style.display = 'block';
+
+                            // Show the captured photo
+                            // The inline CSS rules are used to resize the image
+                            //
+                            largeImage.src = imageURI;
+                        }
+
+                        // A button will call this function
+                        //
+                        function capturePhoto() {
+                            alert('taking photo');
+                            // Take picture using device camera and retrieve image as base64-encoded string
+                            navigator.camera.getPicture(onPhotoDataSuccess, onFail, {
+                                quality: 50,
+                                destinationType: destinationType.DATA_URL
+                            });
+                        }
+
+                        // A button will call this function
+                        //
+                        function capturePhotoEdit() {
+                            // Take picture using device camera, allow edit, and retrieve image as base64-encoded string  
+                            navigator.camera.getPicture(onPhotoDataSuccess, onFail, {
+                                quality: 20, allowEdit: true,
+                                destinationType: destinationType.DATA_URL
+                            });
+                        }
+
+                        // A button will call this function
+                        //
+                        function getPhoto(source) {
+                            // Retrieve image file location from specified source
+                            navigator.camera.getPicture(onPhotoURISuccess, onFail, {
+                                quality: 50,
+                                destinationType: destinationType.FILE_URI,
+                                sourceType: source
+                            });
+                        }
+
+                        // Called if something bad happens.
+                        // 
+                        function onFail(message) {
+                            alert('Failed because: ' + message);
+                        }
+
+        </script>
+    </body>
+</html>
